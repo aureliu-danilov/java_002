@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Număr aleatoriu pe segment</title>
+	<script type="text/javascript" language="javascript">
+		function DivMessageBox(aTipe, aMessage, aWidth, aHeight){
+			var vColor="rgb(192,0,0)";//aTipe = "alert"
+			if (aTipe.toUpperCase()=="INFO"){
+				vColor="rgb(0,112,192)";//aTipe = "info"
+			}
+			var ExistElem = document.getElementById('DivMessageAlert');
+			if (ExistElem){ExistElem.parentNode.removeChild(ExistElem);}
+			var vDivMessage = document.createElement("div");
+			vDivMessage.setAttribute("id", "DivMessageAlert");
+			vDivMessage.setAttribute("style", "position: fixed; top: 0; right: 0; font-size: 14px; z-index: 200; border: 2px groove #008080;"+
+				"width: "+aWidth+"; height: "+aHeight+"; background-color: rgb(180,180,180);" );
+			var vHtml='<ul><li style="margin: 4px; float: right; display: block;">'+
+				'<a style=" background-color: rgb(240,240,240); color: rgb(50,50,50); display: block; padding: 3px 3px 0px 3px;'+
+				' text-decoration: none; transition: all .2s ease-in-out;" '+
+				' onmouseover="this.style.backgroundColor=\'rgb(220,220,220)\'" onmouseout="this.style.backgroundColor=\'rgb(240,240,240)\'"'+
+				' href="javascript:void(0)" onclick="var vDiv=document.getElementById(\'DivMessageAlert\'); vDiv.parentNode.removeChild(vDiv);return false;">X</a>'+
+				'</li></ul>'+
+				'<p style="color: '+vColor+';"><strong>&nbsp;'+aTipe+':&nbsp;</strong>'+aMessage+'</p>';
+			vDivMessage.innerHTML=vHtml;
+			document.body.appendChild(vDivMessage);
+		}
+		function Afiseaza(aText) {
+			if(aText.length>0){
+				var n=parseInt(aText);
+				if(n>0 && n<10){
+					DivMessageBox("info","Dimensiunea matricei este n= "+n.toString(), "350px", "50px");
+					var divMatrixElem = document.getElementById('divMatrice');
+					var vHtml="<p>Matricea inițială:</p>";
+					var a=10;
+					var b=99;
+					var arr = new Array(n);
+					for (i=0; i<n;i++){
+						vHtml+="<p>";
+						arr[i] = new Array(n);
+						for (j=0; j<n;j++){
+							arr[i][j]=Math.floor(a+(b-a)*Math.random());
+							vHtml+=arr[i][j]+"&nbsp;&nbsp;&nbsp;";
+						}
+						vHtml+="</p>";
+					}
+					vHtml+="<p>Vectorul rezultat:</p>";
+					vHtml+="<p>";
+					var left=0;
+					var top=0;
+					var right=n-1;
+					var bottom=n-1;
+					var lege_i= [0,1,0,-1];
+					var lege_j= [1,0,-1,0];
+					var index_ij=0;
+					var m=n*n;//dimensiune vector
+					var i=0;
+					var j=0;
+					for (k=0;k<m;k++){
+						vHtml+=arr[i][j]+"&nbsp;&nbsp;&nbsp;";
+						if(i==top && j==right){index_ij++;}//a ajuns in coltul drept sus
+						if(i==bottom && j==right){index_ij++;}//a ajuns in coltul drept jos
+						if(i==bottom && j==left){index_ij++;}//a ajuns in coltul sting jos
+						if(i==top+1 && j==left){index_ij++;left++;top++;right--;bottom--;i=top;j=left-1;vHtml+="<br>";}//a ajuns in coltul sting sus (rem)
+						if(index_ij==4){index_ij=0;}
+						i+=lege_i[index_ij];
+						j+=lege_j[index_ij];
+					}
+					vHtml+="</p>";
+					divMatrixElem.innerHTML=vHtml;
+				}else{
+					DivMessageBox("alert","Introdu corect dimensiunea matricei 0 < n < 10!!!", "350px", "50px");
+				}
+			}else
+			{
+				DivMessageBox("alert","Introdu dimensiunea matricei 0 < n < 10 !!!", "350px", "50px")
+			}
+		}
+	</script>
+	<style type="text/css">
+		* {
+			margin: 0px;
+			border: 0px;
+			padding: 0px;
+		}
+		html, body {
+			height: 100vh;
+			font-family: 'Times New Roman', Times, serif;
+			font-size: 14px;
+			background: linear-gradient(rgb(290,290,290), rgb(220,220,220), rgb(250,250,250));
+		}
+		p{
+			padding: 0px;
+			margin: 2px;
+		}
+		hr{
+			display: block;
+			margin: 5px 0px 5px 0px;
+			padding: 0px;
+			border-style: groove;
+			border-color: rgba(250,250,250, 0.5);
+			border-width: 2px;
+		}
+		input[type=button] {
+			font-family: "Times New Roman", Times, serif;
+			font-size: 18px;
+			margin: 0px 5px 0px 150px;
+			padding:5px 15px 5px 15px; 
+			width: 200px;
+			height: 35px;
+			background-color: rgb(230,230,230); 
+			background: linear-gradient(rgb(190,190,190), rgb(220,220,220), rgb(160,160,160));
+			cursor:pointer;
+			border-style: groove;
+			border-width: 2px;
+			border-radius: 7px; 
+		}
+		input[type=text], input[type=password] {
+			font-family: "Times New Roman", Times, serif;
+			font-size: 18px;
+			margin: 5px 5px 5px 5px;
+			padding:5px 15px 5px 15px; 
+			width: 200px;
+			height: 25px;
+			background-color: rgb(230,230,230); 
+			background: linear-gradient(rgb(220,220,220), rgb(250,250,250), rgb(190,190,190));
+			border-style: groove;
+			border-width: 2px;
+			border-radius: 7px; 
+		}
+		label{
+			font-size: 18px;
+			display: inline-block;
+			width: 250px;
+			text-align: right;
+		}
+		span.spn_cond{
+			margin: 0px 0px 0px 20px;
+		}
+		input[type="radio"]{
+			margin: 0px 0px 0px 20px;
+		}
+		span.spn_radio{
+			font-size: 18px;
+		}
+		fieldset.fieldset_radio_container{
+			font-family: "Times New Roman", Times, serif;
+			font-size: 18px;
+			margin: 5px 5px 5px 5px;
+			padding:5px 15px 5px 15px; 
+			width: 450px;
+			height: auto;
+			background-color: rgb(230,230,230); 
+			background: linear-gradient(rgb(230,230,230), rgb(250,250,250), rgb(190,190,190));
+			border-style: groove;
+			border-width: 2px;
+			border-color: rgb(230,230,230);
+			border-radius: 7px; 
+		}
+		legend {
+			background: linear-gradient(rgb(230,230,230), rgb(250,250,250), rgb(230,230,230));
+		}
+	</style>
+</head>
+<body>
+	<h1>Lucrarea 4.0.1. Structuri repetitive.</h1>
+	<h2>2. problema 69 (pag 44). Sarpe pe perimetru a unei matrici patrate.</h2>
+	<hr>
+	<form method="post" action="" id="frm_ll02">
+		<label for="txt_a1">Introdu dimensiunea matricei:</label>
+		<input name="txt_a1" type="text" placeholder="0<n<10" ><br >
+		<input name="btn_id_calc" type="button" value="Afișează" 
+		onClick="Afiseaza(txt_a1.value);"><br >
+	</form>
+	<div id="divMatrice" style="font-family: &quot;Courier New&quot;, Courier, monospace; font-size: 14px">
+	<div>
+</body>
+</html>
